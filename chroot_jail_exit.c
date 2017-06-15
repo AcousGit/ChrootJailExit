@@ -14,22 +14,21 @@ int main(int argc, char *argv[]){
 	}
 	
 	/*
-	* We first chroot in an other directory.
-	*/
-	if(chroot(argv[1])<0){
-		perror("chroot");
-		return EXIT_FAILURE;
-	}
-
-	/*
-	* Because C chroot does not change the working directory of our process we can 
-	* open a directory outside of our last chrooted directory. 
+	* We open a directory befor chrooting to be able to exit our own chroot. 
 	*/
 	int fd=open(".",O_DIRECTORY);
 	if(fd<0){
 		perror("open");
 		return EXIT_FAILURE;
 	}
+	
+	/*
+        * We chroot in an other directory.
+        */
+        if(chroot(argv[1])<0){
+                perror("chroot");
+                return EXIT_FAILURE;
+        }	
 	
 	/*
 	* Here we exit of our own chroot directory: this also enable to bypass the initial 
