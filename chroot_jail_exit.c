@@ -9,8 +9,7 @@
 
 int main(int argc, char *argv[]){
 	if(argc != 2){
-		printf("You need to give as an argument a directory the tool \
-								will use to chroot\n");
+		printf("You need to give as an argument a directory the tool will use to chroot\n");
 		return EXIT_FAILURE;
 	}
 	
