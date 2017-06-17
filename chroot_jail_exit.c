@@ -24,7 +24,9 @@ int main(int argc, char *argv[]){
 	}
 	
 	/*
-	* We chroot in an other directory.
+	* We chroot in an other directory. There is no need for this directory 
+	* to have /bin/bash... because we will chroot another time to be sure
+	* to be able to use system().
 	*/
 	if(chroot(argv[1])<0){
 		perror("chroot");
